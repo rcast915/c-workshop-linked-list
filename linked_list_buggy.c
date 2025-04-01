@@ -3,7 +3,8 @@
 #include "linked_list.h"
 
 Node* insert(Node* head, int value) {
-    Node* new_node = (Node*) malloc(sizeof(Node));
+    // Bug no allocation
+    Node* new_node = (Node*);
     if (!new_node) {
         printf("Memory allocation failed\n");
         exit(1);
@@ -24,7 +25,7 @@ Node* delete_node(Node* head, int value) {
             } else {
                 previous->next = current->next;
             }
-            free(current);
+            realloc(current, sizeof(Node)); // Bug realloc instead of free
             return head;
         }
         previous = current;
@@ -40,6 +41,7 @@ void print_list(Node* head) {
     printf("List: ");
     while (current != NULL) {
         printf("%d -> ", current->data);
+        free(current);  // <-- Bug: frees memory that it doesn't own / should not free here
         current = current->next;
     }
     printf("NULL\n");
@@ -50,6 +52,12 @@ void free_list(Node* head) {
     while (head != NULL) {
         temp = head;
         head = head->next;
+
+        // Bug Double Free
         free(temp);
+        free(temp);
+
+        temp->data = 0; // Bug Use after free
+
     }
 }
