@@ -2,7 +2,6 @@
 #include "linked_list.h"
 
 int main() {
-    /*
     
     Node* head = NULL;
 
@@ -19,8 +18,7 @@ int main() {
     
     
     
-    */
-    int a = 42;
-    printf("I am printing: %d\n", a);
+    
+
     return 0;
 }
